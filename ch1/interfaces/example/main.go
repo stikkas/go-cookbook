@@ -31,6 +31,7 @@ func train() {
 	}()
 	data := make([]byte, 100)
 	count, err := r.Read(data)
+	r.Close()
 	if err != nil {
 		panic(err)
 	}
