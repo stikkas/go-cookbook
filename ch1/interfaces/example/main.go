@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"stikkas.ru/go-cookbook/ch1/interfaces"
 )
 
@@ -18,4 +19,20 @@ func main() {
 	if err := interfaces.PipeExample(); err != nil {
 		panic(err)
 	}
+	train()
+}
+
+func train() {
+	r, w := io.Pipe()
+
+	go func() {
+		w.Write([]byte("Привет, доброе утро! Hello, how are you"))
+		w.Close()
+	}()
+	data := make([]byte, 100)
+	count, err := r.Read(data)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(string(data[0:count]))
 }
